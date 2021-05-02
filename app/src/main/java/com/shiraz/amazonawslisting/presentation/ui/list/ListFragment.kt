@@ -5,27 +5,20 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.Toast
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import com.codingwithmitch.daggerhiltplayground.business.domain.state.DataState
 import com.shiraz.amazonawslisting.R
 import com.shiraz.amazonawslisting.base.MyDataBindingComponent
 import com.shiraz.amazonawslisting.databinding.FragmentFirstBinding
 import com.shiraz.amazonawslisting.domain.model.ItemResult
-import com.shiraz.amazonawslisting.presentation.BaseApplication
+import com.shiraz.amazonawslisting.domain.state.DataState
+import com.shiraz.amazonawslisting.BaseApplication
 import com.shiraz.amazonawslisting.presentation.ui.list.adapter.GalleryListingAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-import java.lang.StringBuilder
 import javax.inject.Inject
 
 /**
@@ -37,8 +30,6 @@ import javax.inject.Inject
 class ListFragment : Fragment() {
 
 
-    @Inject
-    lateinit var application: BaseApplication
     private val viewModel: ListViewModel by viewModels()
     private var dataBindingComponent = MyDataBindingComponent(this)
     private lateinit var binding: FragmentFirstBinding
@@ -60,8 +51,6 @@ class ListFragment : Fragment() {
         super.onCreate(savedInstanceState)
         // API trigger
         viewModel.setStateEvent(MainStateEvent.GetItemResultEvent)
-
-
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -92,7 +81,7 @@ class ListFragment : Fragment() {
                 }
                 is DataState.Error -> {
                     displayProgressBar(false)
-                    displayError(dataState.exception.message)
+                    displayError(getString(R.string.somethingwentwrong))
                 }
                 is DataState.Loading -> {
                     displayProgressBar(true)

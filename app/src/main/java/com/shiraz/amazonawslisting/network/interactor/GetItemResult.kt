@@ -1,10 +1,12 @@
 package com.shiraz.amazonawslisting.network.interactor
 
-import com.codingwithmitch.daggerhiltplayground.business.domain.state.DataState
+import android.content.res.Resources
 import com.shiraz.amazonawslisting.domain.model.ItemResult
+import com.shiraz.amazonawslisting.domain.state.DataState
 import com.shiraz.amazonawslisting.repository.AmazonAWSRepository
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
+import java.lang.Exception
 
 class GetItemResult
 constructor(
@@ -19,9 +21,18 @@ constructor(
      * Show List<Results>
      */
     suspend fun execute(): Flow<DataState<List<ItemResult>>> = flow {
-        emit(DataState.Loading)
-        val networkResult = networkDataSource.getList()
-        emit(DataState.Success(networkResult))
+        try {
+            emit(DataState.Loading)
+            val networkResult = networkDataSource.getList()
+            networkResult.let {
+                emit(DataState.Success(networkResult))
+            }
+        }
+        catch (e: Exception){
+            emit(DataState.Error(e))
+        }
+
+
     }
 
 }

@@ -8,7 +8,7 @@ buildscript {
     }
     dependencies {
 
-        def gradle = '4.2.0-rc01'
+        def gradle = '4.0.2'
         classpath "com.android.tools.build:gradle:$gradle"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
 
